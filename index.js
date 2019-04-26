@@ -5,22 +5,6 @@ const port = process.env.PORT || 3002
 let numCPUs = require('os').cpus().length || 1
 const http = require('http')
 
-// const urls = [
-//   'news.ycombinator.com',
-//   'github.com/agarrharr/awesome-static-website-services/blob/master/readme.md',
-//   'https://simpleanalytics.io',
-//   'https://wip.chat/',
-//   'https://simpleanalytics.io/nomadlist.com',
-//   'https://wip.chat/products/1667/pending',
-//   'https://instagram.com/goudenlijntjes/',
-//   'https://instagram.com/p/BvzTiw6lZvd/',
-//   'http://remoteok.io/remote-jobs/71087-remote-customer-support-manager-100k-year-remote-work-crossover',
-//   'http://remoteok.io/remote-companies',
-//   'https://facebook.com',
-//   'https://instagram.com',
-//   'http://indiehackers.com/interview/how-i-started-a-business-with-two-lines-of-code-37f3d5348e',
-// ]
-
 const { Cluster } = require('puppeteer-cluster')
 
 ;(async () => {
