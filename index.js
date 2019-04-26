@@ -34,7 +34,7 @@ const { Cluster } = require('puppeteer-cluster')
       url = isRefresh ? url.slice(8) : url
       url = url.slice(1).toLowerCase()
       url = decodeURIComponent(url)
-      url = url.replace(/[^-a-z0-9/_.]/g, '')
+      url = url.replace(/[^-a-z0-9/_.@]/g, '')
       if (!url.startsWith('http')) url = 'http://' + url
       if (url.indexOf('.') === -1) throw new Error(`Invalid URL: ${url}`)
 
