@@ -1,0 +1,23 @@
+{
+  "name": "screenshots",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "node index.js",
+    "start": "nodemon -e js,sql -x node -r dotenv/config index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^1.14.0",
+    "puppeteer-cluster": "^0.15.2",
+    "sharp": "^0.22.0"
+  },
+  "devDependencies": {
+    "dotenv": "^7.0.0",
+    "nodemon": "^1.18.11"
+  }
+}
