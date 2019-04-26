@@ -55,12 +55,13 @@ const { Cluster } = require('puppeteer-cluster')
       console.log('==>', url)
 
       const stream = await cluster.execute({ url, path })
-
-      if (stream) {
-        res.setHeader('Content-Type', 'image/jpeg')
-        res.setHeader('Cache-Control', 'public, max-age=86400') // one day
+      if (!stream) {
+        res.statusCode = 404
+        return res.end(`Couldn't get screenshot from this URL`)
       }
 
+      res.setHeader('Content-Type', 'image/jpeg')
+      res.setHeader('Cache-Control', 'public, max-age=86400') // one day
       stream.pipe(res)
     } catch (error) {
       console.log(error.message)
