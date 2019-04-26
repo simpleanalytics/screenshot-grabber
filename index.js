@@ -44,6 +44,10 @@ const { Cluster } = require('puppeteer-cluster')
 
       let { pathname: url } = require('url').parse(req.url)
       let path
+
+      const isRefresh = url.slice(0, 9) === '/refresh/'
+
+      url = isRefresh ? url.slice(8) : url
       url = url.slice(1).toLowerCase()
       url = decodeURIComponent(url)
       url = url.replace(/[^-a-z0-9/_.]/g, '')
