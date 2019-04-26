@@ -24,6 +24,7 @@ const http = require('http')
 const { Cluster } = require('puppeteer-cluster')
 
 ;(async () => {
+  console.log(`==> Launching puppeteer cluster with ${numCPUs} workers`)
   const cluster = await Cluster.launch({
     concurrency: Cluster.CONCURRENCY_CONTEXT,
     maxConcurrency: numCPUs,
@@ -78,7 +79,7 @@ const { Cluster } = require('puppeteer-cluster')
   })
 
   server.listen(port, async () => {
-    console.log(`Worker ${process.pid} started listening at http://localhost:${port}`)
+    console.log(`App with pid ${process.pid} started listening on http://localhost:${port}`)
   })
 })()
 
