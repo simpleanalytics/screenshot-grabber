@@ -63,7 +63,9 @@ If you want to remove an element based on a style. A lot of websites have a spec
 }
 ```
 
-### fullPage
+### Other options
+
+#### fullPage
 
 Sometimes you want to disable the full page feature. You can do this like this:
 
