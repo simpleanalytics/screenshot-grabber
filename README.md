@@ -69,7 +69,7 @@ If you want to remove an element based on a style. A lot of websites have a spec
 
 Sometimes you want to disable the full page feature. You can do this like this:
 
-```
+```js
 {
   hostname: /\.?(duckduckgo\.com)$/i,
   fullPage: false
