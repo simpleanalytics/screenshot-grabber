@@ -39,7 +39,7 @@ If you want to click on a button (of a cookie banner for example) you can use th
 
 #### addStylesToElements
 
-If you want to click on a button (of a cookie banner for example) you can use this:
+If you want to add styles to an element you can use this function. Useful when a `100vh` is used.
 
 ```js
 {
