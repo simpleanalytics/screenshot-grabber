@@ -1,11 +1,13 @@
 const { grabOneUrl } = require('./lib/grab')
 
-const port = process.env.PORT || 3002
+const { PORT, APP_URL } = process.env
+const port = PORT || 3002
 
 let numCPUs = require('os').cpus().length || 1
 const http = require('http')
 
 const { Cluster } = require('puppeteer-cluster')
+const { purge } = require('./lib/cloudflare')
 
 ;(async () => {
   console.log(`==> Launching puppeteer cluster with ${numCPUs} workers`)
@@ -40,6 +42,12 @@ const { Cluster } = require('puppeteer-cluster')
 
       const { hostname, pathname } = new URL(url)
       path = `${hostname}${pathname}` + (pathname.slice(-1) === '/' ? '' : '/')
+
+      try {
+        if (isRefresh) purge([ `${APP_URL}/${path}`, `${APP_URL}/${path}`.slice(0, -1) ]) // no async
+      } catch (error) {
+        // nothing
+      }
 
       console.log('==>', url)
 
