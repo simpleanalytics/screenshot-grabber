@@ -9,6 +9,17 @@ Just create a PR and we are happy to merge.
 
 ### How to remove an element from a screenshot
 
+If you are the website owner you can add `data-screenshot="hidden"` to the elements that you don't want to see in your screenshots. The Simple Analytics Screenshots Grabber will add a CSS style to the page where those elements get the style `display: none !important;`. This way those specific elements will be hidden from the screenshots. Thanks to [@woutervanlent](https://twitter.com/woutervanlent) for the suggestion.
+
+```html
+<p>This is visible in the screenshot</p>
+<p data-screenshot="hidden">This is <strong>not</strong> visible in the screenshot</p>
+```
+
+If you don't have access to the website source code, read on.
+
+### Adapters
+
 All website specific settings are stored in adapters. When you want to add a change for a website screenshot you basically want to edit [lib/adapters.js](https://github.com/simpleanalytics/screenshot-grabber/blob/master/lib/adapters.js) and add an adapter (object) for the website you want to edit.
 
 In the adapter you specify the field hostname (it's required) regex. If you're not familiar with regexes you can just copy this (`/\.?example\.com$/i`).
