@@ -29,6 +29,10 @@ const { purge } = require('./lib/cloudflare')
       res.setHeader('Content-Type', 'image/jpeg')
 
       let { pathname: url } = require('url').parse(req.url)
+
+      // Block recursive loading our own server
+      if (/screenshots\.simpleanalytics(cdn)?\.(com|io|is)/gi.test(url)) throw new Error(`Invalid URL because it's recursive`)
+
       let path
 
       const isRefresh = url.slice(0, 9) === '/refresh/'
