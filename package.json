@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "mmmagic": "^0.5.3",
     "puppeteer": "^1.14.0",
     "puppeteer-cluster": "^0.15.2",
     "request": "^2.88.0",

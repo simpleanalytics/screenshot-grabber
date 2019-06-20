@@ -1,4 +1,6 @@
 grabs/
 !grabs/.gitkeep
+proxy/
+!proxy/.gitkeep
 node_modules
 .env
