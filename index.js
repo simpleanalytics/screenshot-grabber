@@ -65,7 +65,7 @@ const { purge } = require('./lib/cloudflare')
       if (isProxy) {
         res.setHeader('Content-Type', 'image/jpeg')
         res.setHeader('Cache-Control', 'public, max-age=86400') // one day
-        const unsafeURL = url.slice('/proxy/'.length)
+        const unsafeURL = decodeURIComponent(url.slice('/proxy/'.length))
         const cleanURL = cleanUrl(url.slice('/proxy/'.length - 1))
         const storeURL = cleanURL.replace(/^https?:\/\//gi, '').replace(/[^a-zA-Z0-9._%-/]+/gi, '-').replace(/(^[. ]+|[. ]+$)/gi, '')
 
@@ -75,18 +75,22 @@ const { purge } = require('./lib/cloudflare')
         if (width && width > 1440) width = 1440
 
         const fileUrl = `./proxy/${width ? `${width}/` : ``}${storeURL}`
-        if (fs.existsSync(fileUrl)) return fs.createReadStream(fileUrl).pipe(res)
+        if (fs.existsSync(fileUrl)) {
+          console.log('==>   (cached)', unsafeURL)
+          return fs.createReadStream(fileUrl).pipe(res)
+        }
+
+        console.log('==> (download)', unsafeURL, width ? `(width: ${width})` : null)
 
         // Create folder structure
         const folder = `./proxy/${width ? `${width}/` : ``}${storeURL.split('/').slice(0, -1).join('/')}`
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true })
 
-
         const mimeChecker = new MimeChecker()
 
         let response
-        if (width) response = request(decodeURIComponent(unsafeURL)).on('error', error => handleError(res, error)).pipe(mimeChecker).pipe(sharp().resize(width, width, { fit: 'contain' }).jpeg({ quality: 80 }))
-        else response = request(decodeURIComponent(unsafeURL)).on('error', error => handleError(res, error)).pipe(mimeChecker).pipe(sharp().jpeg({ quality: 80 }))
+        if (width) response = request(unsafeURL).on('error', error => handleError(res, error)).pipe(mimeChecker).pipe(sharp().resize(width, width, { fit: 'contain' }).jpeg({ quality: 80 }))
+        else response = request(unsafeURL).on('error', error => handleError(res, error)).pipe(mimeChecker).pipe(sharp().jpeg({ quality: 80 }))
 
         const resStream = new PassThrough()
         const saveStream = new PassThrough()
