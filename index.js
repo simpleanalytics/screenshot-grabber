@@ -68,13 +68,19 @@ const { purge } = require('./lib/cloudflare')
         const unsafeURL = url.slice('/proxy/'.length)
         const cleanURL = cleanUrl(url.slice('/proxy/'.length - 1))
         const storeURL = cleanURL.replace(/^https?:\/\//gi, '').replace(/[^a-zA-Z0-9._%-/]+/gi, '-').replace(/(^[. ]+|[. ]+$)/gi, '')
-        const folder = './proxy/' + storeURL.split('/').slice(0, -1).join('/')
-        if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true })
 
         let width
         const { width: widthString } = require('url').parse(req.url, true).query
         if (/[0-9]+/.test(widthString)) width = parseInt(widthString, 10)
         if (width && width > 1440) width = 1440
+
+        const fileUrl = `./proxy/${width ? `${width}/` : ``}${storeURL}`
+        if (fs.existsSync(fileUrl)) return fs.createReadStream(fileUrl).pipe(res)
+
+        // Create folder structure
+        const folder = `./proxy/${width ? `${width}/` : ``}${storeURL.split('/').slice(0, -1).join('/')}`
+        if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true })
+
 
         const mimeChecker = new MimeChecker()
 
@@ -91,7 +97,7 @@ const { purge } = require('./lib/cloudflare')
         response.on('error', error => handleError(res, error))
 
         resStream.pipe(res)
-        saveStream.pipe(fs.createWriteStream(`./proxy/${storeURL}`)).on('error', console.error)
+        saveStream.pipe(fs.createWriteStream(fileUrl)).on('error', console.error)
       } else {
         const isRefresh = url.startsWith('/refresh/')
         url = isRefresh ? url.slice('/refresh/'.length - 1) : url
