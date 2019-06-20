@@ -71,12 +71,16 @@ const { purge } = require('./lib/cloudflare')
         const folder = './proxy/' + storeURL.split('/').slice(0, -1).join('/')
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true })
 
-        const { width } = require('url').parse(req.url, true).query
+        let width
+        const { width: widthString } = require('url').parse(req.url, true).query
+        if (/[0-9]+/.test(widthString)) width = parseInt(width, 10)
+        if (width && width > 1440) width = 1440
+
         const mimeChecker = new MimeChecker()
 
         let response
 
-        if (/[0-9]+/.test(width)) response = request(decodeURIComponent(unsafeURL)).on('error', error => handleError(res, error)).pipe(mimeChecker).pipe(sharp().resize(parseInt(width, 10), parseInt(width, 10), { fit: 'contain' }).jpeg({ quality: 80 }))
+        if (width) response = request(decodeURIComponent(unsafeURL)).on('error', error => handleError(res, error)).pipe(mimeChecker).pipe(sharp().resize(parseInt(width, 10), parseInt(width, 10), { fit: 'contain' }).jpeg({ quality: 80 }))
         else response = request(decodeURIComponent(unsafeURL)).on('error', error => handleError(res, error)).pipe(mimeChecker).pipe(sharp().jpeg({ quality: 80 }))
 
         const resStream = new PassThrough()
