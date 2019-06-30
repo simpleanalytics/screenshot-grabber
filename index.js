@@ -70,13 +70,15 @@ const { purge } = require('./lib/cloudflare')
         const storeURL = cleanURL.replace(/^https?:\/\//gi, '').replace(/[^a-zA-Z0-9._%-/]+/gi, '-').replace(/(^[. ]+|[. ]+$)/gi, '')
 
         let width
-        const { width: widthString } = require('url').parse(req.url, true).query
+        const { width: widthString, refresh: refreshString } = require('url').parse(req.url, true).query
         if (/[0-9]+/.test(widthString)) width = parseInt(widthString, 10)
         if (width && width > 1440) width = 1440
 
+        const refresh = refreshString === 'true'
+
         const fileUrl = `./proxy/${width ? `${width}/` : ``}${storeURL}`
-        if (fs.existsSync(fileUrl)) {
-          console.log('==>   (cached)', unsafeURL)
+        if (!refresh && fs.existsSync(fileUrl)) {
+          console.log('==>   (cached)', unsafeURL, width ? `(width: ${width})` : null)
           return fs.createReadStream(fileUrl).pipe(res)
         }
 
