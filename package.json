@@ -16,7 +16,7 @@
     "puppeteer": "^1.14.0",
     "puppeteer-cluster": "^0.15.2",
     "request": "^2.88.0",
-    "sharp": "^0.22.0"
+    "sharp": "^0.25.4"
   },
   "devDependencies": {
     "dotenv": "^7.0.0",
