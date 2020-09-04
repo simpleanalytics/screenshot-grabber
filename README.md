@@ -1,4 +1,8 @@
-## Simple Analytics Screenshots Grabber
+<a href="https://simpleanalytics.com/?ref=github.com/simpleanalytics/screenshot-grabber">
+  <img src="https://assets.simpleanalytics.com/images/logos/logo-github-readme.png" alt="Simple Analytics logo" align="right" height="62" />
+</a>
+
+## Screenshots Grabber
 
 You are welcome to help improving the screenshots we make. There are two files that are important:
 
